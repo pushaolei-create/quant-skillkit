@@ -1,0 +1,23 @@
+{
+  "name": "quant-skillkit",
+  "enabled": true,
+  "transport": {
+    "type": "http",
+    "base_url": "http://127.0.0.1:8010",
+    "healthcheck": "/health",
+    "tools_endpoint": "/tools"
+  },
+  "tool_policy": {
+    "allow": [
+      "quant.indicator.boll",
+      "quant.indicator.dmi",
+      "quant.portfolio.risk_parity",
+      "quant.options.greeks",
+      "quant.strategy.backtest"
+    ]
+  },
+  "metadata": {
+    "owner": "hermes",
+    "purpose": "quant research and lightweight backtesting"
+  }
+}

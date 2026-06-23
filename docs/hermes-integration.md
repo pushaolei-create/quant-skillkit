@@ -85,3 +85,13 @@ curl http://127.0.0.1:8010/tools
 - the service expects clean market data, not broker order events
 - backtests are research-grade templates, not production execution simulators
 - if you later need live brokerage integration, keep this toolkit as the research layer and place execution elsewhere
+
+
+## One-step deploy bundle
+
+For a ready-to-use deployment bundle, see:
+
+- [deploy/DEPLOY-HERMES.md](../deploy/DEPLOY-HERMES.md)
+- [deploy/start-quant-skillkit.ps1](../deploy/start-quant-skillkit.ps1)
+- [deploy/export-hermes-manifest.ps1](../deploy/export-hermes-manifest.ps1)
+- [deploy/hermes-config.template.json](../deploy/hermes-config.template.json)

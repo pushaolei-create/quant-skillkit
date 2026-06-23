@@ -153,12 +153,16 @@ Useful integration files:
 - [examples/hermes_tool_manifest.json](examples/hermes_tool_manifest.json)
 - [quant_skillkit/hermes_adapter.py](quant_skillkit/hermes_adapter.py)
 - [docs/hermes-integration.md](docs/hermes-integration.md)
+- [deploy/DEPLOY-HERMES.md](deploy/DEPLOY-HERMES.md)
+- [deploy/hermes-config.template.json](deploy/hermes-config.template.json)
 
 ## Project structure | 项目结构
 
 - [quant_skillkit](quant_skillkit)
 - [docs/book-to-skillkit.md](docs/book-to-skillkit.md)
 - [docs/hermes-integration.md](docs/hermes-integration.md)
+- [deploy/DEPLOY-HERMES.md](deploy/DEPLOY-HERMES.md)
+- [deploy/hermes-config.template.json](deploy/hermes-config.template.json)
 - [examples](examples)
 - [tests](tests)
 
