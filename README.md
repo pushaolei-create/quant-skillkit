@@ -1,47 +1,74 @@
 # quant-skillkit
 
-`quant-skillkit` is a lightweight Python toolkit distilled from the practical quant trading sections of *Python 与量化投资：从基础到实战*.
+`quant-skillkit` is a lightweight Python toolkit for turning practical quant trading ideas into reusable research and agent-facing tools.
 
-It is designed for two jobs:
+It was inspired by the hands-on quant sections of *Python 与量化投资：从基础到实战*, but this repository does not reproduce the book's original code or text. Instead, it reshapes the underlying ideas into a clean, dependency-light package that is easier to run, extend, and deploy.
 
-- turn the book's quant ideas into reusable modules instead of notebook-only examples
-- expose those modules through CLI and HTTP so an agent such as `hermes` can call them
+## Why this project exists
 
-## What is included
+A lot of quant learning material stops at notebooks or platform-specific demos. This project is for the next step:
 
-- data cleaning and wide-table preparation
-- technical indicators: `AROON`, `BOLL`, `CCI`, `CMO`, `DMI`
-- factor helpers: winsorize, z-score, momentum, mean reversion
-- strategy templates: sector rotation, trend following, mean reversion, smart beta, market neutral alpha
-- portfolio construction: rank weighting, mean-variance approximation, risk parity
-- backtest engine with turnover and transaction cost support
-- risk metrics: annual return, Sharpe, drawdown, Calmar, win rate
-- option utilities: Black-Scholes price, Greeks, implied volatility, smile table
-- stdlib HTTP API for agent integration
-- Hermes manifest generator and `/tools` discovery endpoint
+- reusable quant research components instead of one-off examples
+- built-in strategy templates for fast experimentation
+- simple CLI workflows for local analysis
+- HTTP endpoints and tool manifests for agent integration
 
-## Why this repo exists
+If you want a compact bridge between quant research, backtesting, and agent tooling, this repo is built for that.
 
-The book's strongest practical value is in Chapters 4 to 6:
+## Core capabilities
 
-- Chapter 4: data acquisition and cleaning
-- Chapter 5: backtesting and risk evaluation
-- Chapter 6: strategy templates and quantitative research workflow
+- Data preparation: tidy price loading, cleaning, pivoting, return generation
+- Indicators: `AROON`, `BOLL`, `CCI`, `CMO`, `DMI`
+- Factor helpers: winsorization, z-score, momentum, mean reversion
+- Strategy templates: sector rotation, trend following, mean reversion, smart beta, market neutral alpha
+- Portfolio construction: rank weighting, mean-variance approximation, risk parity
+- Backtesting: turnover-aware backtest engine with transaction cost support
+- Risk analytics: annual return, Sharpe, drawdown, Calmar, win rate
+- Options utilities: Black-Scholes price, Greeks, implied volatility, volatility smile
+- Agent integration: stdlib HTTP API, Hermes manifest generator, `/tools` discovery endpoint
 
-This repo turns those ideas into a reusable skill pack without copying the book's original code or text.
+## Installation
+
+```bash
+git clone https://github.com/pushaolei-create/quant-skillkit.git
+cd quant-skillkit
+python -m pip install -e .
+```
+
+Dependencies are intentionally minimal:
+
+- `numpy`
+- `pandas`
 
 ## Quick start
 
+Run a sample backtest:
+
 ```bash
-python -m quant_skillkit.cli backtest --input examples/sample_prices.csv --strategy trend-following
-python -m quant_skillkit.cli indicators --input examples/sample_prices.csv --indicator boll
+python -m quant_skillkit.cli backtest --input examples/sample_prices.csv --strategy smart-beta --lookback 3 --top-n 2
+```
+
+Generate a Hermes-friendly manifest:
+
+```bash
 python -m quant_skillkit.cli manifest --base-url http://127.0.0.1:8010
+```
+
+Start the local API service:
+
+```bash
 python -m quant_skillkit.cli serve --host 127.0.0.1 --port 8010
+```
+
+Calculate an indicator from sample data:
+
+```bash
+python -m quant_skillkit.cli indicators --input examples/sample_prices.csv --indicator boll
 ```
 
 ## Input format
 
-The default price file is a tidy CSV:
+The default input is a tidy CSV:
 
 ```text
 date,asset,close,high,low,sector
@@ -49,17 +76,27 @@ date,asset,close,high,low,sector
 2026-01-01,BBB,8.2,8.4,8.0,Finance
 ```
 
-Only `date`, `asset`, and `close` are mandatory for most features.
+Required columns for most workflows:
+
+- `date`
+- `asset`
+- `close`
+
+Useful optional columns:
+
+- `high`
+- `low`
+- `sector`
 
 ## Hermes integration
 
-Start the local API:
+Start the service:
 
 ```bash
 python -m quant_skillkit.cli serve --host 0.0.0.0 --port 8010
 ```
 
-Main endpoints:
+Available endpoints:
 
 - `GET /health`
 - `GET /tools`
@@ -68,17 +105,30 @@ Main endpoints:
 - `POST /options/greeks`
 - `POST /strategy/backtest`
 
-An example tool manifest is in [examples/hermes_tool_manifest.json](/C:/Users/Administrator/Documents/Codex/2026-06-23/new-chat/outputs/quant-skillkit/examples/hermes_tool_manifest.json), and the generator lives in [quant_skillkit/hermes_adapter.py](/C:/Users/Administrator/Documents/Codex/2026-06-23/new-chat/outputs/quant-skillkit/quant_skillkit/hermes_adapter.py).
+Useful integration files:
 
-## Repository layout
+- [examples/hermes_tool_manifest.json](examples/hermes_tool_manifest.json)
+- [quant_skillkit/hermes_adapter.py](quant_skillkit/hermes_adapter.py)
+- [docs/hermes-integration.md](docs/hermes-integration.md)
 
-- [quant_skillkit](/C:/Users/Administrator/Documents/Codex/2026-06-23/new-chat/outputs/quant-skillkit/quant_skillkit)
-- [docs/book-to-skillkit.md](/C:/Users/Administrator/Documents/Codex/2026-06-23/new-chat/outputs/quant-skillkit/docs/book-to-skillkit.md)
-- [docs/hermes-integration.md](/C:/Users/Administrator/Documents/Codex/2026-06-23/new-chat/outputs/quant-skillkit/docs/hermes-integration.md)
-- [tests](/C:/Users/Administrator/Documents/Codex/2026-06-23/new-chat/outputs/quant-skillkit/tests)
+## Project structure
 
-## Run tests
+- [quant_skillkit](quant_skillkit)
+- [docs/book-to-skillkit.md](docs/book-to-skillkit.md)
+- [docs/hermes-integration.md](docs/hermes-integration.md)
+- [examples](examples)
+- [tests](tests)
+
+## Validation
+
+Run tests:
 
 ```bash
 python -m unittest discover -s tests -p "test_*.py"
 ```
+
+## Notes
+
+- This repo is a research toolkit, not a production execution engine.
+- Backtest results are template-grade and should not be treated as live trading evidence.
+- If you later need broker connectivity or production orchestration, it is better to keep this project as the research and signal layer.
